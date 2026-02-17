@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/17 13:41:22 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/17 14:59:41 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	main(int argc, char **argv)
 		threads = malloc(sizeof(pthread_t) * nb_of_philo);
 		philos = malloc(sizeof(t_philo) * nb_of_philo);
 		forks = malloc(sizeof(pthread_mutex_t) * nb_of_philo);
+		if (!threads || !philos || !forks)
+			all_free(threads, philos, forks, "Error: Malloc failed\n");
 		while (i < nb_of_philo)
 		{
 			pthread_mutex_init(&forks[i], NULL);
@@ -61,7 +63,14 @@ int	main(int argc, char **argv)
 			else
 				philos[i].right_fork = &forks[i + 1];
 			if (pthread_create(&threads[i], NULL, routine, &philos[i]) != 0)
-				printf("Error thread\n");
+			{
+				while (--i >= 0)
+					pthread_join(threads[i], NULL);
+				free(threads);
+				free(philos);
+				free(forks);
+				exit_error("Error thread\n");
+			}
 			i++;
 		}
 		i = 0;

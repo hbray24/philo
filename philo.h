@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:23:06 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/17 13:36:13 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/17 14:59:37 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,7 @@ long				get_time_in_ms(void);
 long				ft_atol(const char *str);
 void				valid_nbr(int argc, char **argv);
 void				exit_error(char *str);
+void				all_free(pthread_t *threads, t_philo *philos,
+						pthread_mutex_t *forks, char *str);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 08:56:06 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/17 13:19:49 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/17 14:58:27 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,19 @@ void	exit_error(char *str)
 	i = 0;
 	while (str[i])
 	{
-		write (2, &str[i], 1);
+		write(2, &str[i], 1);
 		i++;
 	}
-	exit (1);
+	exit(1);
+}
+
+void	all_free(pthread_t *threads, t_philo *philos, pthread_mutex_t *forks,
+		char *str)
+{
+	free(threads);
+	free(philos);
+	free(forks);
+	exit_error(str);
 }
 static int	verif_nbr(char *str)
 {
@@ -62,12 +71,11 @@ void	valid_nbr(int argc, char **argv)
 			if (nb > INT_MAX || nb <= 0)
 				exit_error("Error: Invalid arguments\n");
 		}
-		else 
+		else
 		{
 			if (nb > INT_MAX || nb < 0)
 				exit_error("Error: Invalid arguments\n");
 		}
-
 		i++;
 	}
 }
