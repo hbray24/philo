@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 08:56:06 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/17 10:33:31 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/17 13:19:49 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	verif_nbr(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] == ' ' || '\t' <= str[i] && str[i] <= '\r')
+	while (str[i] == ' ' || ('\t' <= str[i] && str[i] <= '\r'))
 		i++;
 	if (str[i] == '+')
 		i++;
@@ -57,8 +57,17 @@ void	valid_nbr(int argc, char **argv)
 		if (!verif_nbr(argv[i]))
 			exit_error("Error: Invalid arguments\n");
 		nb = ft_atol(argv[i]);
-		if (nb > INT_MAX || nb <= 0)
-			exit_error("Error: Invalid arguments\n");
+		if (i == 1)
+		{
+			if (nb > INT_MAX || nb <= 0)
+				exit_error("Error: Invalid arguments\n");
+		}
+		else 
+		{
+			if (nb > INT_MAX || nb < 0)
+				exit_error("Error: Invalid arguments\n");
+		}
+
 		i++;
 	}
 }

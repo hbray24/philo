@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:23:06 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/17 10:52:14 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/17 13:36:13 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ typedef struct s_philo
 	int				time_to_sleep;
 	int				number_eat;
 }					t_philo;
+
 long				get_time_in_ms(void);
 long				ft_atol(const char *str);
 void				valid_nbr(int argc, char **argv);
+void				exit_error(char *str);
 #endif

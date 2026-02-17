@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/17 10:52:27 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/17 13:41:22 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void	*routine(void *arg)
 
 int	main(int argc, char **argv)
 {
-		long start_time;
-		int i;
-		int nb_of_philo;
-		pthread_t *threads;
-		t_philo *philos;
-		pthread_mutex_t *forks;
+	long			start_time;
+	int				i;
+	int				nb_of_philo;
+	pthread_t		*threads;
+	t_philo			*philos;
+	pthread_mutex_t	*forks;
 
 	if (argc == 5 || argc == 6)
 	{
@@ -54,13 +54,13 @@ int	main(int argc, char **argv)
 			philos[i].time_to_sleep = (int)ft_atol(argv[4]);
 			if (argc == 6)
 				philos[i].number_eat = ft_atol(argv[5]);
-			else 
+			else
 				philos[i].number_eat = -1;
 			if (i == nb_of_philo - 1)
 				philos[i].right_fork = &forks[0];
 			else
 				philos[i].right_fork = &forks[i + 1];
-			if(pthread_create(&threads[i], NULL, routine, &philos[i]) != 0)
+			if (pthread_create(&threads[i], NULL, routine, &philos[i]) != 0)
 				printf("Error thread\n");
 			i++;
 		}
@@ -82,8 +82,5 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	else
-	{
-		printf("Error\n");
-		return (0);
-	}
+		exit_error("Error: Invalid number of arguments\n");
 }
