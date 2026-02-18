@@ -1,38 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   detroy_free.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/18 13:07:53 by hbray            ###   ########.fr       */
+/*   Created: 2026/02/18 13:03:05 by hbray             #+#    #+#             */
+/*   Updated: 2026/02/18 13:08:19 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*routine(void *arg)
+int	destroy_mutex(t_data *data)
 {
-	t_philo	*mon_philo;
+	int	i;
 
-	mon_philo = (t_philo *)arg;
-	printf("je suis le thread%d\n", mon_philo->id);
-	return (NULL);
+	i = 0;
+	while (i < data->nb_philo)
+	{
+		if (pthread_mutex_destroy(data->forks) != 0)
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
-int	main(int argc, char **argv)
+int	join_pthread(t_data *data, t_philo *philos)
 {
-	t_data	data;
-	t_philo *philos;
+	int	i;
 
-	if (argc < 5 || argc > 6)
-		exit_error("Error: Invalid number of arguments\n");
-	valid_nbr(argc, argv);
-	if (init_data(&data,argc, argv) == 0)
-		return (1);
-	if (init_philo(&philos, &data) == 0)
-		return (1);
-	create_threads(philos);
+	i = 0;
+	while (i < data->nb_philo)
+	{
+		if (pthread_join(philos[i].thread_id, NULL) != 0)
+			return (1);
+		i++;
+	}
 	return (0);
 }

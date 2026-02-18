@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 08:56:06 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/17 14:58:27 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/17 16:26:54 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,11 @@ void	exit_error(char *str)
 	exit(1);
 }
 
-void	all_free(pthread_t *threads, t_philo *philos, pthread_mutex_t *forks,
-		char *str)
+void	all_free(pthread_t *threads, t_philo *philos, pthread_mutex_t *forks)
 {
 	free(threads);
 	free(philos);
 	free(forks);
-	exit_error(str);
 }
 static int	verif_nbr(char *str)
 {

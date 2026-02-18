@@ -8,6 +8,8 @@ SRCS =	main.c \
 		parsing.c \
 		time.c \
 		utils.c \
+		init.c \
+		detroy_free.c \
 
 OBJS = $(SRCS:.c=.o)
 
