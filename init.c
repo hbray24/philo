@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 16:04:27 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/18 13:44:49 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/18 13:54:17 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,31 +38,34 @@ int	init_data(t_data *data, int argc, char **argv)
 
 int	init_philo(t_philo **philos, t_data *data)
 {
+	t_philo *philo_tmp;
 	int	i;
 
 	i = 0;
 	*philos = malloc(sizeof(t_philo) * data->nb_philo);
 	if (!*philos)
 		return (1);
+	philo_tmp = *philos;
 	while (i < data->nb_philo)
 	{
-		philos[i]->id = i + 1;
-		philos[i]->left_fork = &data->forks[i];
+		philo_tmp[i].id = i + 1;
+		philo_tmp[i].data = data;
+		philo_tmp[i].left_fork = &data->forks[i];
 		if (i == data->nb_philo - 1)
-			philos[i]->right_fork = &data->forks[0];
+			philo_tmp[i].right_fork = &data->forks[0];
 		else
-			philos[i]->right_fork = &data->forks[i + 1];
+			philo_tmp[i].right_fork= &data->forks[i + 1];
 		i++;
 	}
 	return (0);
 }
 
-int	create_threads(t_philo *philos, t_data *data)
+int	create_threads(t_philo *philos)
 {
 	int	i;
 
 	i = 0;
-	while (i < data->nb_philo)
+	while (i < philos[i].data->nb_philo)
 	{
 		if (pthread_create(&philos[i].thread_id, NULL, routine, &philos[i]) != 0)
 			return (1);

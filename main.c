@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/18 13:45:48 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/18 14:28:29 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ int	main(int argc, char **argv)
 		return (1);
 	if (init_philo(&philos, &data) != 0)
 		return (1);
-	create_threads(philos, &data);
+	if(create_threads(philos) != 0)
+		return (1);
 	join_pthread(&data, philos);
+	all_free(philos, &data);
 	return (0);
 }

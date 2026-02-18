@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 13:03:05 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/18 13:08:19 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/18 14:27:37 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,10 @@ int	join_pthread(t_data *data, t_philo *philos)
 		i++;
 	}
 	return (0);
+}
+
+void	all_free(t_philo *philos, t_data *data)
+{
+	free (philos);
+	free (data);
 }
