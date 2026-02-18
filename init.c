@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 16:04:27 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/18 13:07:52 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/18 13:44:49 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,19 @@ int	init_philo(t_philo **philos, t_data *data)
 			philos[i]->right_fork = &data->forks[0];
 		else
 			philos[i]->right_fork = &data->forks[i + 1];
+		i++;
 	}
 	return (0);
 }
 
-int	create_threads(t_philo *philos)
+int	create_threads(t_philo *philos, t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while (i < philos[0].data->nb_philo)
+	while (i < data->nb_philo)
 	{
-		if (pthread_create(&philos[i].thread_id, NULL, routine, &philos[i]) == 0)
+		if (pthread_create(&philos[i].thread_id, NULL, routine, &philos[i]) != 0)
 			return (1);
 		i++;
 	}
