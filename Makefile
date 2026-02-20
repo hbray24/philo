@@ -2,7 +2,7 @@ NAME = philo
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-LDFLAGS = -lpthread
+LDFLAGS = -pthread
 
 SRCS =	main.c \
 		parsing.c \

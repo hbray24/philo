@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:23:06 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/18 14:28:08 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/20 11:21:42 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ typedef struct s_data
 	int				time_to_sleep;
 	int				number_eat;
 	long			start_time;
+	int				is_dead;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	write_lock;
+	pthread_mutex_t	dead_lock;
 }					t_data;
 
 typedef struct s_philo
@@ -44,6 +46,7 @@ typedef struct s_philo
 
 void				*routine(void *arg);
 long				get_time_in_ms(void);
+void				ft_usleep(long time_ms);
 long				ft_atol(const char *str);
 void				valid_nbr(int argc, char **argv);
 void				exit_error(char *str);
@@ -52,6 +55,8 @@ int					init_philo(t_philo **philos, t_data *data);
 int					create_threads(t_philo *philos);
 int					join_pthread(t_data *data, t_philo *philos);
 int					destroy_mutex(t_data *data);
+void				print_action(t_philo *philo, char *str);
+void				monitor(t_philo *philos);
 void				all_free(t_philo *philos, t_data *data);
 
 #endif
