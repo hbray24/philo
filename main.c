@@ -6,11 +6,34 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/23 09:48:21 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/23 13:52:09 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	philo_eat(t_philo *philo)
+{
+	pthread_mutex_lock(philo->left_fork);
+	print_action(philo, "has taken a fork");
+	if (philo->data->nb_philo == 1)
+	{
+		ft_usleep(philo->data->time_to_die);
+		pthread_mutex_unlock(philo->left_fork);
+		return (1);
+	}
+	pthread_mutex_lock(philo->right_fork);
+	print_action(philo, "has taken a fork");
+	print_action(philo, "is eating");
+	pthread_mutex_lock(&philo->meal_lock);
+	philo->last_meal_time = get_time_in_ms();
+	philo->nb_eat += 1;
+	pthread_mutex_unlock(&philo->meal_lock);
+	ft_usleep(philo->data->time_to_eat);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
+	return (0);
+}
 
 void	*routine(void *arg)
 {
@@ -19,24 +42,10 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
 		ft_usleep(10);
-	while (check_death(philo->data) == 0)
+	while (check_finish(philo->data) == 0)
 	{
-		pthread_mutex_lock(philo->left_fork);
-		print_action(philo, "has taken a fork");
-		if (philo->data->nb_philo == 1)
-		{
-			ft_usleep(philo->data->time_to_die);
-			pthread_mutex_unlock(philo->left_fork);
+		if (philo_eat(philo))
 			break ;
-		}
-		pthread_mutex_lock(philo->right_fork);
-		print_action(philo, "has taken a fork");
-		print_action(philo, "is eating");
-		philo->last_meal_time = get_time_in_ms();
-		philo->nb_eat += 1;
-		ft_usleep(philo->data->time_to_eat);
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
 		print_action(philo, "is sleeping");
 		ft_usleep(philo->data->time_to_sleep);
 		print_action(philo, "is thinking");

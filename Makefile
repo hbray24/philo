@@ -10,6 +10,7 @@ SRCS =	main.c \
 		utils.c \
 		init.c \
 		detroy_free.c \
+		check.c \
 
 OBJS = $(SRCS:.c=.o)
 

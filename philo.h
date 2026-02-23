@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:23:06 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/23 08:59:54 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/23 13:56:58 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ typedef struct s_data
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				nb_of_times_each_philo_must_eat;
+	int				goal_eat;
 	long			start_time;
-	int				is_dead;
+	int				is_finish;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	write_lock;
-	pthread_mutex_t	dead_lock;
+	pthread_mutex_t	finish_lock;
 }					t_data;
 
 typedef struct s_philo
@@ -40,6 +40,7 @@ typedef struct s_philo
 	long			last_meal_time;
 	int				nb_eat;
 	t_data			*data;
+	pthread_mutex_t	meal_lock;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_t		thread_id;
@@ -58,7 +59,7 @@ int					join_pthread(t_data *data, t_philo *philos);
 int					destroy_mutex(t_data *data);
 void				print_action(t_philo *philo, char *str);
 void				monitor(t_philo *philos);
-int					check_death(t_data *data);
+int					check_finish(t_data *data);
 void				all_free(t_philo *philos, t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 13:03:05 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/20 15:02:06 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/23 10:16:58 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	destroy_mutex(t_data *data)
 	}
 	if (pthread_mutex_destroy(&data->write_lock) != 0)
 		return (1);
-	if (pthread_mutex_destroy(&data->dead_lock) != 0)
+	if (pthread_mutex_destroy(&data->finish_lock) != 0)
 		return (1);
 	return (0);
 }
