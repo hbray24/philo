@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:23:06 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/20 15:09:50 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/23 08:59:54 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_data
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				number_eat;
+	int				nb_of_times_each_philo_must_eat;
 	long			start_time;
 	int				is_dead;
 	pthread_mutex_t	*forks;
@@ -38,6 +38,7 @@ typedef struct s_philo
 {
 	int				id;
 	long			last_meal_time;
+	int				nb_eat;
 	t_data			*data;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;

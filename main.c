@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/20 15:39:29 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/23 09:48:21 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,17 @@ void	*routine(void *arg)
 	{
 		pthread_mutex_lock(philo->left_fork);
 		print_action(philo, "has taken a fork");
+		if (philo->data->nb_philo == 1)
+		{
+			ft_usleep(philo->data->time_to_die);
+			pthread_mutex_unlock(philo->left_fork);
+			break ;
+		}
 		pthread_mutex_lock(philo->right_fork);
 		print_action(philo, "has taken a fork");
 		print_action(philo, "is eating");
 		philo->last_meal_time = get_time_in_ms();
+		philo->nb_eat += 1;
 		ft_usleep(philo->data->time_to_eat);
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);

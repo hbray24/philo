@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 15:02:37 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/20 15:24:56 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/23 09:56:09 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,12 @@ void	print_action(t_philo *philo, char *str)
 void	monitor(t_philo *philos)
 {
 	int	i;
+	int	finish_eat;
 
 	while (1)
 	{
 		i = 0;
+		finish_eat = 0;
 		while (i < philos->data->nb_philo)
 		{
 			if (get_time_in_ms()
@@ -63,7 +65,16 @@ void	monitor(t_philo *philos)
 				pthread_mutex_unlock(&philos->data->write_lock);
 				return ;
 			}
+			if (philos->data->nb_of_times_each_philo_must_eat == philos[i].nb_eat)
+				finish_eat++;
 			i++;
+		}
+		if (philos->data->nb_of_times_each_philo_must_eat == finish_eat)
+		{
+			pthread_mutex_lock(&philos->data->dead_lock);
+			philos->data->is_dead = 1;
+			pthread_mutex_unlock(&philos->data->dead_lock);
+			return ;
 		}
 	}
 }
