@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:02:26 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/23 15:05:59 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/23 15:56:46 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,23 @@ static int	check_death(t_philo *philos)
 void	monitor(t_philo *philos)
 {
 	int	i;
-	int	finish_eat;
 
 	while (1)
 	{
 		i = -1;
-		finish_eat = 0;
+		philos->data->finish_eat = 0;
 		while (++i < philos->data->nb_philo)
 		{
 			if (check_death(&philos[i]))
 				return ;
 			pthread_mutex_lock(&philos[i].meal_lock);
-			if (philos->data->goal_eat == philos[i].nb_eat)
-				finish_eat++;
+			if (philos->data->goal_eat != -1
+				&& philos->data->goal_eat == philos[i].nb_eat)
+				philos->data->finish_eat++;
 			pthread_mutex_unlock(&philos[i].meal_lock);
 		}
-		if (philos->data->goal_eat == finish_eat)
+		if (philos->data->goal_eat != -1
+			&& philos->data->nb_philo == philos->data->finish_eat)
 		{
 			pthread_mutex_lock(&philos->data->finish_lock);
 			philos->data->is_finish = 1;
