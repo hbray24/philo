@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 16:04:27 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/20 10:46:02 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/20 14:17:11 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	init_data(t_data *data, int argc, char **argv)
 		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
 	}
+	data->is_dead = 0;
 	pthread_mutex_init(&data->write_lock, NULL);
 	pthread_mutex_init(&data->dead_lock, NULL);
 	data->start_time = get_time_in_ms();
@@ -54,6 +55,7 @@ int	init_philo(t_philo **philos, t_data *data)
 		philo_tmp[i].id = i + 1;
 		philo_tmp[i].data = data;
 		philo_tmp[i].left_fork = &data->forks[i];
+		philo_tmp[i].last_meal_time = data->start_time;
 		if (i == data->nb_philo - 1)
 			philo_tmp[i].right_fork = &data->forks[0];
 		else

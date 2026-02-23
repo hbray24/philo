@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/20 11:46:47 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/20 15:39:29 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	philo->last_meal_time = get_time_in_ms();
 	if (philo->id % 2 == 0)
 		ft_usleep(10);
-	while (1)
+	while (check_death(philo->data) == 0)
 	{
 		pthread_mutex_lock(philo->left_fork);
 		print_action(philo, "has taken a fork");
@@ -34,8 +33,8 @@ void	*routine(void *arg)
 		print_action(philo, "is sleeping");
 		ft_usleep(philo->data->time_to_sleep);
 		print_action(philo, "is thinking");
-	return (NULL);
 	}
+	return (NULL);
 }
 
 int	main(int argc, char **argv)

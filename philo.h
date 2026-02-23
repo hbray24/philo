@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:23:06 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/20 11:21:42 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/20 15:09:50 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int					join_pthread(t_data *data, t_philo *philos);
 int					destroy_mutex(t_data *data);
 void				print_action(t_philo *philo, char *str);
 void				monitor(t_philo *philos);
+int					check_death(t_data *data);
 void				all_free(t_philo *philos, t_data *data);
 
 #endif
