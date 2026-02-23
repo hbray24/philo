@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:02:26 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/23 14:46:05 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/23 15:05:59 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 
 static int	check_death(t_philo *philos)
 {
-	if (get_time_in_ms() - philos->last_meal_time >= philos->data->time_to_die)
+	long	last_meal;
+
+	pthread_mutex_lock(&philos->meal_lock);
+	last_meal = philos->last_meal_time;
+	pthread_mutex_unlock(&philos->meal_lock);
+	if (get_time_in_ms() - last_meal >= philos->data->time_to_die)
 	{
 		pthread_mutex_lock(&philos->data->write_lock);
 		printf("%ld %d died\n", get_time_in_ms() - philos->data->start_time,
@@ -41,8 +46,10 @@ void	monitor(t_philo *philos)
 		{
 			if (check_death(&philos[i]))
 				return ;
+			pthread_mutex_lock(&philos[i].meal_lock);
 			if (philos->data->goal_eat == philos[i].nb_eat)
 				finish_eat++;
+			pthread_mutex_unlock(&philos[i].meal_lock);
 		}
 		if (philos->data->goal_eat == finish_eat)
 		{

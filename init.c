@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 16:04:27 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/23 13:57:24 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/23 15:19:30 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ int	init_philo(t_philo **philos, t_data *data)
 	t_philo	*philo_tmp;
 	int		i;
 
-	i = 0;
+	i = -1;
 	*philos = malloc(sizeof(t_philo) * data->nb_philo);
 	if (!*philos)
 		return (1);
 	philo_tmp = *philos;
-	while (i < data->nb_philo)
+	while (++i < data->nb_philo)
 	{
 		philo_tmp[i].id = i + 1;
 		philo_tmp[i].data = data;
@@ -64,7 +64,7 @@ int	init_philo(t_philo **philos, t_data *data)
 			philo_tmp[i].nb_eat = 0;
 		else
 			philo_tmp[i].nb_eat = -1;
-		i++;
+		pthread_mutex_init(&philo_tmp[i].meal_lock, NULL);
 	}
 	return (0);
 }

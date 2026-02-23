@@ -6,13 +6,13 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/18 13:03:05 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/23 10:16:58 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/23 14:57:23 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	destroy_mutex(t_data *data)
+int	destroy_mutex(t_data *data, t_philo *philos)
 {
 	int	i;
 
@@ -20,6 +20,8 @@ int	destroy_mutex(t_data *data)
 	while (i < data->nb_philo)
 	{
 		if (pthread_mutex_destroy(&data->forks[i]) != 0)
+			return (1);
+		if (pthread_mutex_destroy(&philos[i].meal_lock) != 0)
 			return (1);
 		i++;
 	}

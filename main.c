@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/23 13:52:09 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/23 14:55:49 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	main(int argc, char **argv)
 		return (1);
 	monitor(philos);
 	join_pthread(&data, philos);
+	destroy_mutex(&data, philos);
 	all_free(philos, &data);
 	return (0);
 }
