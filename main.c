@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/23 14:55:49 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/24 10:15:22 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,26 @@
 
 int	philo_eat(t_philo *philo)
 {
-	pthread_mutex_lock(philo->left_fork);
-	print_action(philo, "has taken a fork");
-	if (philo->data->nb_philo == 1)
+	if (philo->id % 2 == 0)
 	{
-		ft_usleep(philo->data->time_to_die);
-		pthread_mutex_unlock(philo->left_fork);
-		return (1);
+		pthread_mutex_lock(philo->right_fork);
+		print_action(philo, "has taken a fork");
+		pthread_mutex_lock(philo->left_fork);
+		print_action(philo, "has taken a fork");
 	}
-	pthread_mutex_lock(philo->right_fork);
-	print_action(philo, "has taken a fork");
+	else
+	{
+		pthread_mutex_lock(philo->left_fork);
+		print_action(philo, "has taken a fork");
+		if (philo->data->nb_philo == 1)
+		{
+			ft_usleep(philo->data->time_to_die);
+			pthread_mutex_unlock(philo->left_fork);
+			return (1);
+		}
+		pthread_mutex_lock(philo->right_fork);
+		print_action(philo, "has taken a fork");
+	}
 	print_action(philo, "is eating");
 	pthread_mutex_lock(&philo->meal_lock);
 	philo->last_meal_time = get_time_in_ms();
@@ -40,8 +50,6 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->id % 2 == 0)
-		ft_usleep(10);
 	while (check_finish(philo->data) == 0)
 	{
 		if (philo_eat(philo))
