@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:02:26 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/23 15:56:46 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/24 15:07:26 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,14 @@ void	monitor(t_philo *philos)
 			pthread_mutex_unlock(&philos[i].meal_lock);
 		}
 		if (philos->data->goal_eat != -1
-			&& philos->data->nb_philo == philos->data->finish_eat)
+			&& philos->data->nb_philo <= philos->data->finish_eat)
 		{
 			pthread_mutex_lock(&philos->data->finish_lock);
 			philos->data->is_finish = 1;
 			pthread_mutex_unlock(&philos->data->finish_lock);
 			return ;
 		}
+		ft_usleep(1000);
 	}
 }
 
