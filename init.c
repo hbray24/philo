@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 16:04:27 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/23 15:59:49 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/25 09:29:07 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	init_data(t_data *data, int argc, char **argv)
 		i++;
 	}
 	data->is_finish = 0;
-	data->finish_eat = 0;
 	pthread_mutex_init(&data->write_lock, NULL);
 	pthread_mutex_init(&data->finish_lock, NULL);
 	data->start_time = get_time_in_ms();
