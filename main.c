@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/25 10:33:14 by hbray            ###   ########.fr       */
+/*   Updated: 2026/02/25 13:47:44 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	philo_eat(t_philo *philo)
 	ft_usleep(philo->data->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
+	if (philo->nb_eat == philo->data->goal_eat)
+		return (1);
 	return (0);
 }
 
@@ -50,6 +52,10 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	if (philo->id % 3 == 0)
+		ft_usleep(philo->data->time_to_eat);
+	else if (philo->id % 3 == 2)
+		ft_usleep(philo->data->time_to_eat * 2);
 	while (check_finish(philo->data) == 0)
 	{
 		if (philo_eat(philo))
