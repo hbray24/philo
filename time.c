@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:43:07 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/20 15:10:02 by hbray            ###   ########.fr       */
+/*   Updated: 2026/03/09 13:46:40 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@ void	ft_usleep(long time_ms)
 	star_time = get_time_in_ms();
 	while ((get_time_in_ms() - star_time) < time_ms)
 	{
-		usleep(50);
+		usleep(500);
 	}
 }
