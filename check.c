@@ -6,30 +6,52 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:02:26 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/25 10:32:10 by hbray            ###   ########.fr       */
+/*   Updated: 2026/03/09 08:58:40 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	check_death(t_philo *philos)
+static int	philo_dead(t_philo *philo)
 {
-	long	last_meal;
+	pthread_mutex_lock(&philo->data->write_lock);
+	printf("%ld %d died\n", get_time_in_ms() - philo->data->start_time,
+		philo->id);
+	pthread_mutex_lock(&philo->data->finish_lock);
+	philo->data->is_finish = 1;
+	pthread_mutex_unlock(&philo->data->finish_lock);
+	pthread_mutex_unlock(&philo->data->write_lock);
+	return (1);
+}
 
-	pthread_mutex_lock(&philos->meal_lock);
-	last_meal = philos->last_meal_time;
-	pthread_mutex_unlock(&philos->meal_lock);
-	if (get_time_in_ms() - last_meal >= philos->data->time_to_die)
+static int	check_finish_eat(t_philo *philo, int finish_eat)
+{
+	if (philo->data->goal_eat != -1 && philo->data->nb_philo <= finish_eat)
 	{
-		pthread_mutex_lock(&philos->data->write_lock);
-		printf("%ld %d died\n", get_time_in_ms() - philos->data->start_time,
-			philos->id);
-		pthread_mutex_lock(&philos->data->finish_lock);
-		philos->data->is_finish = 1;
-		pthread_mutex_unlock(&philos->data->finish_lock);
-		pthread_mutex_unlock(&philos->data->write_lock);
+		pthread_mutex_lock(&philo->data->write_lock);
+		pthread_mutex_lock(&philo->data->finish_lock);
+		philo->data->is_finish = 1;
+		pthread_mutex_unlock(&philo->data->finish_lock);
+		pthread_mutex_unlock(&philo->data->write_lock);
 		return (1);
 	}
+	return (0);
+}
+
+static int	check_philo(t_philo *philo, int *finish_eat)
+{
+	int	dead;
+
+	dead = 0;
+	pthread_mutex_lock(&philo->meal_lock);
+	if (get_time_in_ms() - philo->last_meal_time >= philo->data->time_to_die)
+		dead = 1;
+	else if (philo->data->goal_eat != -1
+		&& philo->nb_eat >= philo->data->goal_eat)
+		(*finish_eat)++;
+	pthread_mutex_unlock(&philo->meal_lock);
+	if (dead)
+		return (philo_dead(philo));
 	return (0);
 }
 
@@ -44,33 +66,20 @@ void	monitor(t_philo *philos)
 		finish_eat = 0;
 		while (++i < philos->data->nb_philo)
 		{
-			if (check_death(&philos[i]))
+			if (check_philo(&philos[i], &finish_eat))
 				return ;
-			pthread_mutex_lock(&philos[i].meal_lock);
-			if (philos->data->goal_eat != -1
-				&& philos->data->goal_eat <= philos[i].nb_eat)
-				finish_eat++;
-			pthread_mutex_unlock(&philos[i].meal_lock);
 		}
-		if (philos->data->goal_eat != -1
-			&& philos->data->nb_philo <= finish_eat)
-		{
-			pthread_mutex_lock(&philos->data->write_lock);
-			pthread_mutex_lock(&philos->data->finish_lock);
-			philos->data->is_finish = 1;
-			pthread_mutex_unlock(&philos->data->finish_lock);
-			pthread_mutex_unlock(&philos->data->write_lock);
+		if (check_finish_eat(philos, finish_eat))
 			return ;
-		}
 	}
 }
 
 int	check_finish(t_data *data)
 {
-	int	dead;
+	int	finish;
 
 	pthread_mutex_lock(&data->finish_lock);
-	dead = data->is_finish;
+	finish = data->is_finish;
 	pthread_mutex_unlock(&data->finish_lock);
-	return (dead);
+	return (finish);
 }
