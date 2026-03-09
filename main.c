@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/25 14:34:33 by hbray            ###   ########.fr       */
+/*   Updated: 2026/03/09 13:16:24 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	main(int argc, char **argv)
 	t_data	data;
 	t_philo	*philos;
 
-	setbuf(stdout, NULL);
 	if (argc < 5 || argc > 6)
 		exit_error("Error: Invalid number of arguments\n");
 	valid_nbr(argc, argv);
