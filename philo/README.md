@@ -1,4 +1,4 @@
-*This projet has been created as part of the 42 curriculum by hbray*
+*This project has been created as part of the 42 curriculum by hbray*
 
 # Philosophers
 
@@ -24,8 +24,8 @@ make re			# Recompiles philo
 ### Execution
 
 ```bash
-./philo <nuber_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep>
-./philo <nuber_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep> <number_of_times_each_philosophers_must_eat>
+./philo <number_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep>
+./philo <number_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep> <number_of_times_each_philosophers_must_eat>
 ```
 
 ### Examples
@@ -34,7 +34,7 @@ make re			# Recompiles philo
 ./philo 4 410 200 200		# no philosopher should die
 ./philo 4 310 200 200		# one philosopher should die
 ./philo 5 610 200 200		# no philosopher should die
-./philo 4 410 200 200 7		# stop after 7 meal
+./philo 4 410 200 200 7		# stop after 7 meals
 ./philo 1 410 200 200		# 1 philosopher, will die
 ```
 
