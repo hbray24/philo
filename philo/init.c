@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 16:04:27 by hbray             #+#    #+#             */
-/*   Updated: 2026/02/25 09:29:07 by hbray            ###   ########.fr       */
+/*   Updated: 2026/03/10 09:34:23 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	init_data(t_data *data, int argc, char **argv)
 {
 	int	i;
 
-	i = 0;
 	data->nb_philo = ft_atol(argv[1]);
 	data->time_to_die = ft_atol(argv[2]);
 	data->time_to_eat = ft_atol(argv[3]);
@@ -28,6 +27,7 @@ int	init_data(t_data *data, int argc, char **argv)
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->nb_philo);
 	if (!data->forks)
 		return (1);
+	i = 0;
 	while (i < data->nb_philo)
 	{
 		pthread_mutex_init(&data->forks[i], NULL);

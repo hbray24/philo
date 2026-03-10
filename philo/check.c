@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:02:26 by hbray             #+#    #+#             */
-/*   Updated: 2026/03/09 14:38:54 by hbray            ###   ########.fr       */
+/*   Updated: 2026/03/10 09:34:19 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,13 @@ void	monitor(t_philo *philos)
 
 	while (1)
 	{
-		i = -1;
+		i = 0;
 		finish_eat = 0;
-		while (++i < philos->data->nb_philo)
+		while (i < philos->data->nb_philo)
 		{
 			if (check_philo(&philos[i], &finish_eat))
 				return ;
+			i++;
 		}
 		if (check_finish_eat(philos, finish_eat))
 			return ;
