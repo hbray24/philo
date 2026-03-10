@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/03/10 09:34:24 by hbray            ###   ########.fr       */
+/*   Updated: 2026/03/10 13:51:56 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	take_forks(t_philo *philo)
 		print_action(philo, "has taken a fork");
 		if (philo->data->nb_philo == 1)
 		{
-			ft_usleep(philo->data->time_to_die);
+			ft_usleep(philo->data->time_to_die, philo);
 			pthread_mutex_unlock(philo->left_fork);
 			return (1);
 		}
@@ -44,16 +44,16 @@ static int	philo_cycle(t_philo *philo)
 	philo->last_meal_time = get_time_in_ms();
 	philo->nb_eat += 1;
 	pthread_mutex_unlock(&philo->meal_lock);
-	ft_usleep(philo->data->time_to_eat);
+	ft_usleep(philo->data->time_to_eat, philo);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 	if (philo->nb_eat == philo->data->goal_eat)
 		return (1);
 	print_action(philo, "is sleeping");
-	ft_usleep(philo->data->time_to_sleep);
+	ft_usleep(philo->data->time_to_sleep, philo);
 	print_action(philo, "is thinking");
 	if (philo->data->nb_philo % 2 != 0)
-		ft_usleep(10);
+		ft_usleep(10, philo);
 	return (0);
 }
 
@@ -63,7 +63,7 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
-		ft_usleep(10);
+		ft_usleep(10, philo);
 	while (check_finish(philo->data) == 0)
 	{
 		if (take_forks(philo))

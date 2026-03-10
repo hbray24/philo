@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:23:06 by hbray             #+#    #+#             */
-/*   Updated: 2026/03/10 09:34:28 by hbray            ###   ########.fr       */
+/*   Updated: 2026/03/10 13:51:10 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_philo
 
 void				*routine(void *arg);
 long				get_time_in_ms(void);
-void				ft_usleep(long time_ms);
+void				ft_usleep(long time_ms, t_philo *philo);
 long				ft_atol(const char *str);
 void				valid_nbr(int argc, char **argv);
 void				exit_error(char *str);
