@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/03/10 13:51:56 by hbray            ###   ########.fr       */
+/*   Updated: 2026/03/11 14:35:30 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	take_forks(t_philo *philo)
 
 static int	philo_cycle(t_philo *philo)
 {
+	long	thinking_time;
+
 	print_action(philo, "is eating");
 	pthread_mutex_lock(&philo->meal_lock);
 	philo->last_meal_time = get_time_in_ms();
@@ -53,7 +55,12 @@ static int	philo_cycle(t_philo *philo)
 	ft_usleep(philo->data->time_to_sleep, philo);
 	print_action(philo, "is thinking");
 	if (philo->data->nb_philo % 2 != 0)
-		ft_usleep(10, philo);
+	{
+		thinking_time = (philo->data->time_to_die - philo->data->time_to_eat
+				- philo->data->time_to_sleep) / 2;
+		if (thinking_time > 0)
+			ft_usleep(thinking_time, philo);
+	}
 	return (0);
 }
 
@@ -62,6 +69,11 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	pthread_mutex_lock(&philo->meal_lock);
+	philo->last_meal_time = get_time_in_ms();
+	pthread_mutex_unlock(&philo->meal_lock);
+	if (philo->data->goal_eat == 0)
+		return (NULL);
 	if (philo->id % 2 == 0)
 		ft_usleep(10, philo);
 	while (check_finish(philo->data) == 0)
@@ -80,8 +92,15 @@ int	main(int argc, char **argv)
 	t_philo	*philos;
 
 	if (argc < 5 || argc > 6)
-		exit_error("Error: Invalid number of arguments\n");
-	valid_nbr(argc, argv);
+	{
+		write(2, "Error: Invalid number of arguments\n", 36);
+		return (1);
+	}
+	if (valid_nbr(argc, argv))
+	{
+		write(2, "Error: Invalid arguments\n", 26);
+		return (1);
+	}
 	if (init_data(&data, argc, argv) != 0)
 		return (1);
 	if (init_philo(&philos, &data) != 0)
