@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/03/11 15:50:05 by hbray            ###   ########.fr       */
+/*   Updated: 2026/03/11 16:23:06 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,10 @@ static int	philo_cycle(t_philo *philo)
 	print_action(philo, "is thinking");
 	if (philo->data->nb_philo % 2 != 0)
 	{
-		thinking_time = (philo->data->time_to_die - philo->data->time_to_eat
-				- philo->data->time_to_sleep) / 2;
+		thinking_time = 2 * philo->data->time_to_eat
+			- philo->data->time_to_sleep;
+		if (thinking_time < 0)
+			thinking_time = 0;
 		if (thinking_time > 0)
 			ft_usleep(thinking_time, philo);
 	}
@@ -69,13 +71,13 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while(1)
+	while (1)
 	{
 		pthread_mutex_lock(&philo->data->finish_lock);
-		if(philo->data->ready == 1)
+		if (philo->data->ready == 1)
 		{
 			pthread_mutex_unlock(&philo->data->finish_lock);
-			break;
+			break ;
 		}
 		pthread_mutex_unlock(&philo->data->finish_lock);
 		usleep(100);
@@ -86,7 +88,7 @@ void	*routine(void *arg)
 	if (philo->data->goal_eat == 0)
 		return (NULL);
 	if (philo->id % 2 == 0)
-		ft_usleep(10, philo);
+		ft_usleep(philo->data->time_to_eat, philo);
 	while (check_finish(philo->data) == 0)
 	{
 		if (take_forks(philo))
