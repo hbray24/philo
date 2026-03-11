@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 13:02:26 by hbray             #+#    #+#             */
-/*   Updated: 2026/03/11 14:27:53 by hbray            ###   ########.fr       */
+/*   Updated: 2026/03/11 15:49:40 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	monitor(t_philo *philos)
 		}
 		if (check_finish_eat(philos, finish_eat))
 			return ;
-		ft_usleep(2, philos);
+		usleep(500);
 	}
 }
 

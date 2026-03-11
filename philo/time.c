@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:43:07 by hbray             #+#    #+#             */
-/*   Updated: 2026/03/11 09:46:59 by hbray            ###   ########.fr       */
+/*   Updated: 2026/03/11 15:48:52 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ void	ft_usleep(long time_ms, t_philo *philos)
 	while ((get_time_in_ms() - star_time) < time_ms
 		&& check_finish(philos->data) == 0)
 	{
-		usleep(500);
+		usleep(100);
 	}
 }

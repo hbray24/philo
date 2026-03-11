@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/03/11 14:35:30 by hbray            ###   ########.fr       */
+/*   Updated: 2026/03/11 15:50:05 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,19 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	while(1)
+	{
+		pthread_mutex_lock(&philo->data->finish_lock);
+		if(philo->data->ready == 1)
+		{
+			pthread_mutex_unlock(&philo->data->finish_lock);
+			break;
+		}
+		pthread_mutex_unlock(&philo->data->finish_lock);
+		usleep(100);
+	}
 	pthread_mutex_lock(&philo->meal_lock);
-	philo->last_meal_time = get_time_in_ms();
+	philo->last_meal_time = philo->data->start_time;
 	pthread_mutex_unlock(&philo->meal_lock);
 	if (philo->data->goal_eat == 0)
 		return (NULL);
@@ -107,6 +118,10 @@ int	main(int argc, char **argv)
 		return (1);
 	if (create_threads(philos) != 0)
 		return (1);
+	pthread_mutex_lock(&data.finish_lock);
+	data.start_time = get_time_in_ms();
+	data.ready = 1;
+	pthread_mutex_unlock(&data.finish_lock);
 	monitor(philos);
 	join_pthread(&data, philos);
 	destroy_mutex(&data, philos);
