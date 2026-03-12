@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/17 08:56:06 by hbray             #+#    #+#             */
-/*   Updated: 2026/03/11 10:23:31 by hbray            ###   ########.fr       */
+/*   Updated: 2026/03/12 09:47:54 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,21 @@ int	valid_nbr(int argc, char **argv)
 				return (1);
 		}
 		i++;
+	}
+	return (0);
+}
+
+int	ft_parsing(int argc, char **argv)
+{
+	if (argc < 5 || argc > 6)
+	{
+		write(2, "Error: Invalid number of arguments\n", 36);
+		return (1);
+	}
+	if (valid_nbr(argc, argv))
+	{
+		write(2, "Error: Invalid arguments\n", 26);
+		return (1);
 	}
 	return (0);
 }

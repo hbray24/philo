@@ -6,7 +6,7 @@
 /*   By: hbray <hbray@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:52:35 by hbray             #+#    #+#             */
-/*   Updated: 2026/03/11 16:23:06 by hbray            ###   ########.fr       */
+/*   Updated: 2026/03/12 11:08:11 by hbray            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	take_forks(t_philo *philo)
 
 static int	philo_cycle(t_philo *philo)
 {
-	long	thinking_time;
+	long	time_to_think;
 
 	print_action(philo, "is eating");
 	pthread_mutex_lock(&philo->meal_lock);
@@ -56,21 +56,18 @@ static int	philo_cycle(t_philo *philo)
 	print_action(philo, "is thinking");
 	if (philo->data->nb_philo % 2 != 0)
 	{
-		thinking_time = 2 * philo->data->time_to_eat
+		time_to_think = 2 * philo->data->time_to_eat
 			- philo->data->time_to_sleep;
-		if (thinking_time < 0)
-			thinking_time = 0;
-		if (thinking_time > 0)
-			ft_usleep(thinking_time, philo);
 	}
+	else
+		time_to_think = philo->data->time_to_eat - philo->data->time_to_sleep;
+	if (time_to_think > 0)
+		ft_usleep(time_to_think, philo);
 	return (0);
 }
 
-void	*routine(void *arg)
+static void	wait_for_ready(t_philo *philo)
 {
-	t_philo	*philo;
-
-	philo = (t_philo *)arg;
 	while (1)
 	{
 		pthread_mutex_lock(&philo->data->finish_lock);
@@ -82,6 +79,14 @@ void	*routine(void *arg)
 		pthread_mutex_unlock(&philo->data->finish_lock);
 		usleep(100);
 	}
+}
+
+void	*routine(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	wait_for_ready(philo);
 	pthread_mutex_lock(&philo->meal_lock);
 	philo->last_meal_time = philo->data->start_time;
 	pthread_mutex_unlock(&philo->meal_lock);
@@ -104,16 +109,8 @@ int	main(int argc, char **argv)
 	t_data	data;
 	t_philo	*philos;
 
-	if (argc < 5 || argc > 6)
-	{
-		write(2, "Error: Invalid number of arguments\n", 36);
+	if (ft_parsing(argc, argv) != 0)
 		return (1);
-	}
-	if (valid_nbr(argc, argv))
-	{
-		write(2, "Error: Invalid arguments\n", 26);
-		return (1);
-	}
 	if (init_data(&data, argc, argv) != 0)
 		return (1);
 	if (init_philo(&philos, &data) != 0)
